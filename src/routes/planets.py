@@ -1,5 +1,4 @@
 import logging
-from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
@@ -20,7 +19,7 @@ async def get_planets(db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/{planet_id}", response_model=models.Planet)
-async def get_planet(planet_id: UUID, db: AsyncSession = Depends(get_db)):
+async def get_planet(planet_id: str, db: AsyncSession = Depends(get_db)):
     planet = await db.get(entities.Planet, planet_id)
     if planet is None:
         raise HTTPException(status_code=404, detail="Planet not found")
@@ -32,10 +31,8 @@ async def create_planet(
     request: models.CreatePlanet, db: AsyncSession = Depends(get_db)
 ):
     planet = entities.Planet()
-    planet.id = uuid4()
+    planet.id = request.id
     planet.name = request.name
-    planet.project_id = request.project_id
-    planet.population_millions = request.population_millions
 
     db.add(planet)
     await db.commit()
@@ -43,27 +40,9 @@ async def create_planet(
     return planet
 
 
-@router.put("/{planet_id}", response_model=models.Planet)
-async def update_planet(
-    planet_id: UUID, request: models.UpdatePlanet, db: AsyncSession = Depends(get_db)
-):
-    planet = await db.get(entities.Planet, planet_id)
-    if planet is None:
-        raise HTTPException(status_code=404, detail="Planet not found")
-
-    planet.name = request.name
-    planet.population_millions = request.population_millions
-
-    logger.info(f"Updating planet {planet.name}.")
-
-    await db.commit()
-
-    return planet
-
-
 @router.delete("/{planet_id}", response_model=models.Planet)
 async def delete_planet(
-    planet_id: UUID,
+    planet_id: str,
     db: AsyncSession = Depends(get_db),
 ):
     planet = await db.get(entities.Planet, planet_id)

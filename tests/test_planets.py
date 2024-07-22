@@ -1,5 +1,3 @@
-import uuid
-
 import pytest
 from httpx import AsyncClient
 from sqlalchemy import DDL
@@ -24,7 +22,7 @@ async def session_cleanup():
 
 
 async def test_planet_creation():
-    request = CreatePlanet(name="test", project_id=uuid.uuid4(), population_millions=1)
+    request = CreatePlanet(id="test", name="test")
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response = await ac.post(
@@ -36,6 +34,4 @@ async def test_planet_creation():
 
     planet = Planet.model_validate_json(response.content)
     assert planet.name == request.name
-    assert planet.project_id == request.project_id
-    assert planet.population_millions == request.population_millions
-    assert planet.id is not None
+    assert planet.id == "test"

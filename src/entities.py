@@ -12,10 +12,8 @@ class Planet(Base):
     __tablename__ = "planets"
     __table_args__ = {"schema": SCHEMA_NAME}
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True)
+    id: Mapped[str] = mapped_column(Text, primary_key=True)
     name: Mapped[str] = mapped_column(Text, nullable=False)
-    project_id: Mapped[uuid.UUID] = mapped_column(UUID, nullable=False)
-    population_millions: Mapped[int] = mapped_column(Integer, nullable=False)
 
 
 class StationType(Flag):
@@ -27,17 +25,17 @@ class Station(Base):
     __tablename__ = "stations"
     __table_args__ = {"schema": SCHEMA_NAME}
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True)
+    id: Mapped[str] = mapped_column(Text, primary_key=True)
     name: Mapped[str] = mapped_column(Text, nullable=False)
-    commander: Mapped[str] = mapped_column(Text, nullable=False)
     established_on: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), nullable=False
     )
     type: Mapped[StationType] = mapped_column(
         Enum(StationType, schema=SCHEMA_NAME), nullable=False
     )
+    population: Mapped[int] = mapped_column(Integer, nullable=False)
 
-    planet_id: Mapped[uuid.UUID] = mapped_column(
+    planet_id: Mapped[str] = mapped_column(
         ForeignKey(Planet.id, ondelete="CASCADE"), nullable=False
     )
     planet: Mapped[Planet] = relationship(Planet)

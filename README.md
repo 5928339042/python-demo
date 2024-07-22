@@ -3,7 +3,7 @@
 ## Prerequisites
 
 * Python 3.10+ (needs to be available in Path)
-* Python poetry 1.7 (needs to be available in Path)
+* Python poetry 1.8 (needs to be available in Path)
 * PostgreSQL server.
 
 ## Development setup
@@ -15,7 +15,7 @@ Poetry installation documentation: https://python-poetry.org/docs/#installing-wi
 The simpliest way is with a script (admin not required):
 
 ```powershell
-(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py - --version 1.7.0
+(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py - --version 1.8.0
 ```
 
 In order to use python tools easily, it is best to add script path `%APPDATA%\Python\Scripts` to user environment variables. This has to be done through GUI. After editing user environment variables, a sign-out has to be performed.
@@ -42,7 +42,7 @@ Tip for vscode: setup a python profile so extensions do not mix if you do any ot
 ## Developing
 
 * In commandline, switch into project directory.
-* Run `poetry install --no-root`, this will create a python virtual environment and install packages into it.
+* Run `poetry install`, this will create a python virtual environment and install packages into it.
 After that, run `poetry shell` to get access to that environment.
     > **_Note For Windows users_** If you recieve an error message like `File ...\.venv\Scripts\activate.ps1 cannot be loaded because running scripts is disabled on this system`. To corrrect this please run the following command
     `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`

@@ -6,9 +6,8 @@ from .entities import StationType
 
 
 class CreatePlanet(BaseModel):
+    id: str
     name: str = Field(strict=True)
-    project_id: UUID
-    population_millions: NonNegativeInt = Field(strict=True)
 
 
 class UpdatePlanet(BaseModel):
@@ -19,34 +18,26 @@ class UpdatePlanet(BaseModel):
 class Planet(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    id: UUID
+    id: str
     name: str
-    project_id: UUID
-    population_millions: NonNegativeInt
 
 
 class CreateStation(BaseModel):
+    id: str
     name: str = Field(strict=True)
-    commander: str = Field(strict=True)
+    population: NonNegativeInt = Field(strict=True)
     established_on: PastDatetime
     type: StationType
-    planet_id: UUID
-
-
-class UpdateStation(BaseModel):
-    name: str = Field(strict=True)
-    commander: str = Field(strict=True)
-    established_on: PastDatetime
-    type: StationType
+    planet_id: str
 
 
 class Station(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    id: UUID
+    id: str
     name: str
-    commander: str
+    population: int
     established_on: PastDatetime
     type: StationType
-    planet_id: UUID
+    planet_id: str
     planet: Planet
